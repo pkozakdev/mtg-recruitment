@@ -1,0 +1,1 @@
+Zadanie rekrutacyjne dla firmy Macrix Polska
