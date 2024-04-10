@@ -12,7 +12,7 @@ namespace macrix_client.Controllers
 {
     public interface IActionsService
     {
-        void Hello();
+        void RenderHeader();
         void RenderDashboard(bool reactive = true);
         List<User> GetUsers();
         void PrintLine();
@@ -36,7 +36,7 @@ namespace macrix_client.Controllers
             _width = _configuration.GetValue<int>("TableWidth");
 
         }
-        public void Hello()
+        public void RenderHeader()
         {
             Console.WriteLine(FiggleFonts.Ogre.Render("macrix"));
             Console.WriteLine(FiggleFonts.Straight.Render("technology group"));

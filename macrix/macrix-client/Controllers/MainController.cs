@@ -29,7 +29,7 @@ namespace macrix_client.Controllers
 
         public void Thread1()
         {
-            _actionsService.Hello();
+            _actionsService.RenderHeader();
             _actionsService.RenderDashboard();
             
             Console.ReadLine();

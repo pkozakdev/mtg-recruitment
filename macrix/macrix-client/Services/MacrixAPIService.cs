@@ -32,7 +32,6 @@ namespace macrix_client.Data
 
         public async Task<string> CallRestMethod(RestMethod method, int userId = 0, User user = null)
         {
-            //retrieving all users in the absence of userId, all users in the presence of it 
             try
             {
                 var client = _httpClientFactory.CreateClient();
