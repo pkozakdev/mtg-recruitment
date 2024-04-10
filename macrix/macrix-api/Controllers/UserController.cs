@@ -66,7 +66,7 @@ namespace macrix_api.Controllers
                 return StatusCode(StatusCodes.Status304NotModified,
                    "User with that Id not found");
             }
-         
+
 
 
         }
@@ -110,7 +110,7 @@ namespace macrix_api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
-                try
+            try
             {
                 EF.User userToDelete = _db.Users.FirstOrDefault(x => x.Id == id);
 

@@ -17,7 +17,10 @@ namespace macrix_api.EF
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Age => this.GetAge();
-
+        //this is a calculated field, and we already have DOB in the database, so I opted to have it calculated on EF level
+        //it would quickly go out of date without updates or a scheduled job to update it for users (eg. hangfire)
+        //this could also be done on the database level, which I suspect is the desired solution, but SQLite doesn't support computed columns,
+        //I didn't want to have extra steps added to setup by requiring MSSQL (per the instructions)
         public string GetAge()
         {
             string age = (DateTime.Now.Year - this.DateOfBirth.Year).ToString();

@@ -1,8 +1,8 @@
 ﻿using macrix_client.Controllers;
+using macrix_client.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using macrix_client.Data;
 using System.Runtime.InteropServices;
 
 namespace macrix_client
@@ -10,7 +10,7 @@ namespace macrix_client
     class Program
     {
         //this is needed to resize the terminal window in Windows 11, necessary to avoid manually changing the host to Windows Console Host in Windows Developer Settings
-        //this is also totally not needed in Widows 10 and prior
+        //this is also not needed in Widows 10 and prior versions
         //thanks to Node defender - https://stackoverflow.com/questions/77482431/c-sharp-cannot-maximize-console-from-within-the-code
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
@@ -20,11 +20,11 @@ namespace macrix_client
         static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
         [DllImport("user32.dll")]
         static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
-        private const int SW_RESTORE = 9; 
+        private const int SW_RESTORE = 9;
 
         static void Main(string[] args)
         {
-            // Windows 11 Terminal fun times pt.2
+            // More Windows 11 terminal stuff
             // Constants for the ShowWindow function
             const int SW_MAXIMIZE = 3;
             // Get the handle of the console window
@@ -59,11 +59,6 @@ namespace macrix_client
             ILogger logger = loggerFactory.CreateLogger<Program>();
             logger.LogDebug("Starting application");
             MainController Program = ActivatorUtilities.CreateInstance<MainController>(serviceProvider);
-            //something like this was sufficient in Win 10
-            //Console.BufferWidth = 200;
-            //Console.BufferHeight = 200;
-            //Console.WindowHeight = 200;
-            //Console.WindowWidth = 200;
             Program.Start();
         }
 

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Text;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace macrix_client.Data
 {
 
     public interface IMacrixAPIService
     {
-        Task<string> CallRestMethod (RestMethod method, int userId = 0, User user = null);
+        Task<string> CallRestMethod(RestMethod method, int userId = 0, User user = null);
     }
     internal class MacrixAPIService : IMacrixAPIService
     {
@@ -51,7 +51,7 @@ namespace macrix_client.Data
 
                 if (method == RestMethod.GET)
                 {
-                   
+
                     using HttpResponseMessage response = await client.GetAsync(apiUrl);
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -63,7 +63,7 @@ namespace macrix_client.Data
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     using HttpResponseMessage response = await client.PostAsync(apiUrl, byteContent);
                     return await response.Content.ReadAsStringAsync();
-                   
+
                 }
                 else if (method == RestMethod.DELETE)
                 {
@@ -76,13 +76,13 @@ namespace macrix_client.Data
                         using HttpResponseMessage response = await client.DeleteAsync(apiUrl);
                         return await response.Content.ReadAsStringAsync();
                     }
-                   
+
                 }
                 else
                 {
                     return "Invalid method specified - Allowed: GET, POST, DELETE";
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -90,8 +90,8 @@ namespace macrix_client.Data
             }
 
         }
-       
-        }
 
     }
+
+}
 

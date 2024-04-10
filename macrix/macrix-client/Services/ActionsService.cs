@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 
 namespace macrix_client.Controllers
 {
@@ -43,10 +43,8 @@ namespace macrix_client.Controllers
             Console.WriteLine("");
         }
 
-        public void RenderDashboard(bool reactive = true)
+        public void RenderDashboard(bool interactive = true)
         {
-            //to allow db to save changes before pulling the information
-            Thread.Sleep(1000);
             Users = GetUsers();
             if (Users.Any())
             {
@@ -63,16 +61,21 @@ namespace macrix_client.Controllers
                 }
                 PrintLine();
                 Console.WriteLine();
-                Console.WriteLine("Press e to edit, press any other key to refresh");
+                if (interactive)
+                {
+                    Console.WriteLine("Press e to edit, press any other key to refresh");
+                }
             }
             else
             {
-                Console.WriteLine();
+                Console.WriteLine("");
                 Console.WriteLine("No users in the database");
-                Console.WriteLine("Press e to edit, press any other key to refresh");
-
+                if (interactive)
+                {
+                    Console.WriteLine("Press e to edit, press any other key to refresh");
+                }
             }
-            if (reactive)
+            if (interactive)
             {
                 //interaction
                 do
@@ -94,7 +97,7 @@ namespace macrix_client.Controllers
                     }
                 } while (true);
             }
-           
+
         }
         public void RenderOptions()
         {
@@ -139,16 +142,17 @@ namespace macrix_client.Controllers
                 }
 
             }
-            
+
         }
         public void AddUser()
         {
-            
+
             Console.Clear();
             User newUser = GetUserInfo();
             _macrixApiService.CallRestMethod(RestMethod.POST, 0, newUser);
             Console.Clear();
-            _logger.LogDebug("User Added " + newUser);
+            Thread.Sleep(1000);
+            Console.Clear(); _logger.LogDebug("User Added " + newUser);
             RenderDashboard();
 
         }
@@ -164,6 +168,8 @@ namespace macrix_client.Controllers
             _macrixApiService.CallRestMethod(RestMethod.POST, Convert.ToInt32(userId), newUser);
             _logger.LogDebug("User Edited " + newUser);
             Console.Clear();
+            Thread.Sleep(1000);
+            Console.Clear();
             RenderDashboard();
 
         }
@@ -178,7 +184,6 @@ namespace macrix_client.Controllers
             _macrixApiService.CallRestMethod(RestMethod.DELETE, Convert.ToInt32(userId));
             _logger.LogDebug("User Edited: Id " + userId);
             Console.Clear();
-            Console.WriteLine("Loading...");
             Thread.Sleep(1000);
             Console.Clear();
             RenderDashboard();
@@ -238,15 +243,15 @@ namespace macrix_client.Controllers
                         var isInteger = false;
                         while (String.IsNullOrEmpty(value) || value == "default" || isInteger == false)
                         {
-                             var isNumeric = int.TryParse(value, out _);
+                            var isNumeric = int.TryParse(value, out _);
                             while (isNumeric == false)
                             {
                                 Console.WriteLine("Provide a numeric value");
                                 isNumeric = int.TryParse(Console.ReadLine(), out _);
                             }
-                             
-                             isInteger = true;
-                             
+
+                            isInteger = true;
+
                         }
                         return value;
                     }
@@ -254,7 +259,7 @@ namespace macrix_client.Controllers
                     {
                         while (String.IsNullOrEmpty(value))
                         {
-                            
+
                             Console.WriteLine("Value cannot be empty");
                             value = Console.ReadLine();
 
@@ -328,8 +333,8 @@ namespace macrix_client.Controllers
                     return value;
                 }
             }
-            
-           
+
+
         }
         public List<User> GetUsers()
         {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
-using System.Text.Encodings.Web;
 using System.Text;
+using System.Text.Encodings.Web;
 
 // Dimitris Maragkos - Simple implementation of Basic Auth from dotnetthoughts.com, modified to read the credentials from appsettings.json
 // stackoverflow.com/questions/73999266/asp-net-core-web-api-how-to-authorize-my-web-api-request-with-basic-auth

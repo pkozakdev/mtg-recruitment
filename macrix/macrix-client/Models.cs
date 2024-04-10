@@ -28,7 +28,7 @@ namespace macrix_client
         POST = 1,
         DELETE = 2
     }
-   
+
 }
 
 
