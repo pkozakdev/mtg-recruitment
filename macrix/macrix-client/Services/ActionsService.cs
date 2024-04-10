@@ -41,6 +41,8 @@ namespace macrix_client.Controllers
             Console.WriteLine(FiggleFonts.Ogre.Render("macrix"));
             Console.WriteLine(FiggleFonts.Straight.Render("technology group"));
             Console.WriteLine("");
+            Console.WriteLine("Please use the full-screen mode");
+
         }
 
         public void RenderDashboard(bool interactive = true)
@@ -151,7 +153,7 @@ namespace macrix_client.Controllers
             User newUser = GetUserInfo();
             _macrixApiService.CallRestMethod(RestMethod.POST, 0, newUser);
             Console.Clear();
-            Thread.Sleep(1000);
+            Thread.Sleep(1500);
             Console.Clear(); _logger.LogDebug("User Added " + newUser);
             RenderDashboard();
 
@@ -206,7 +208,7 @@ namespace macrix_client.Controllers
             newUser.houseNumber = GetValue();
             Console.WriteLine("Apartment Number");
             string optionalApartmentNo = GetValue(false, true, true);
-            if (optionalApartmentNo != "")
+            if (!String.IsNullOrEmpty(optionalApartmentNo))
             {
                 newUser.apartmentNumber = Convert.ToInt32(optionalApartmentNo);
             }
@@ -243,13 +245,18 @@ namespace macrix_client.Controllers
                         var isInteger = false;
                         while (String.IsNullOrEmpty(value) || value == "default" || isInteger == false)
                         {
-                            var isNumeric = int.TryParse(value, out _);
+                            var isNumeric = int.TryParse(value, out _) || value == "";
                             while (isNumeric == false)
                             {
                                 Console.WriteLine("Provide a numeric value");
-                                isNumeric = int.TryParse(Console.ReadLine(), out _);
+                                value = Console.ReadLine();
+                                isNumeric = int.TryParse(value, out _);
                             }
-
+                            if (checkForUser && !Users.Any(x => x.id == Convert.ToInt32(value)))
+                            {
+                                Console.WriteLine("User doesn't exist");
+                                value = "default";
+                            }
                             isInteger = true;
 
                         }
@@ -300,20 +307,19 @@ namespace macrix_client.Controllers
                         else
                         {
                             var isNumeric = int.TryParse(value, out _);
-                            if (isNumeric == false)
+                            while (isNumeric == false)
                             {
                                 Console.WriteLine("Provide a numeric value");
+                                value = Console.ReadLine();
+                                isNumeric = int.TryParse(value, out _);
+                            }
+                            if (checkForUser && !Users.Any(x => x.id == Convert.ToInt32(value)))
+                            {
+                                Console.WriteLine("User doesn't exist");
                                 value = "default";
                             }
-                            else
-                            {
-                                if (!Users.Any(x => x.id == Convert.ToInt32(value)))
-                                {
-                                    Console.WriteLine("User doesn't exist");
-                                    value = "default";
-                                }
-                                isInteger = true;
-                            }
+                            isInteger = true;
+
                         }
 
                     }
