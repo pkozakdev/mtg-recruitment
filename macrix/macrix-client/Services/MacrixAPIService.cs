@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -59,20 +57,13 @@ namespace macrix_client.Data
                 }
                 else if (method == RestMethod.POST)
                 {
-                    if (userId == 0)
-                    {
-                        return "DELETE method requires a userId";
-                    }
-                    else
-                    {
-                        var content = JsonConvert.SerializeObject(user);
-                        var bytes = Encoding.UTF8.GetBytes(content);
-                        var byteContent = new ByteArrayContent(bytes);
-                        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                        using HttpResponseMessage response = await client.PostAsync(apiUrl, byteContent);
-                        return await response.Content.ReadAsStringAsync();
-                    }
+                    var content = JsonConvert.SerializeObject(user);
+                    var bytes = Encoding.UTF8.GetBytes(content);
+                    var byteContent = new ByteArrayContent(bytes);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    using HttpResponseMessage response = await client.PostAsync(apiUrl, byteContent);
+                    return await response.Content.ReadAsStringAsync();
+                   
                 }
                 else if (method == RestMethod.DELETE)
                 {

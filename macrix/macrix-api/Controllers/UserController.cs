@@ -1,13 +1,12 @@
 ﻿using macrix_api.Data;
 using macrix_api.EF;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace macrix_api.Controllers
 {
     // disabled auth because, despite working correctly in swagger & postman, and having basic auth implemented correctly in the client, would lose auth header when receiving httpclient requests
-    // this is due to 3xx redirections, but the requests in fiddler looked exactly the same
+    // due to 3xx redirections, but the requests in fiddler looked exactly the same
     [Route("api/[controller]"), /*Authorize*/]
     [ApiController]
     public class UserController : ControllerBase

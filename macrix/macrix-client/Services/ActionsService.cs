@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Threading;
 using System.Linq;
 using System.Text.Json;
@@ -46,6 +45,8 @@ namespace macrix_client.Controllers
 
         public void RenderDashboard(bool reactive = true)
         {
+            //to allow db to save changes before pulling the information
+            Thread.Sleep(1000);
             Users = GetUsers();
             if (Users.Any())
             {
@@ -53,7 +54,7 @@ namespace macrix_client.Controllers
                 Console.WriteLine("Users in the system:");
                 Console.WriteLine("");
                 PrintLine();
-                PrintRow("Id", "First Name", "Last Name", "Street Name", "House No", "Appartment No", "Postal Code", "Town", "Phone Number", "DOB", "Age");
+                PrintRow("Id", "First Name", "Last Name", "Street Name", "House No", "Appt No", "Postal Code", "Town", "Phone No", "DOB", "Age");
                 PrintLine();
                 foreach (var x in Users)
                 {
@@ -82,6 +83,7 @@ namespace macrix_client.Controllers
                         if (key.Key == ConsoleKey.E)
                         {
                             RenderOptions();
+                            _logger.LogDebug("Key pressed: " + key.Key);
                         }
                         else
                         {
@@ -90,7 +92,6 @@ namespace macrix_client.Controllers
                         }
 
                     }
-                    System.Threading.Thread.Sleep(100);
                 } while (true);
             }
            
@@ -104,7 +105,8 @@ namespace macrix_client.Controllers
             Console.WriteLine("B: Edit User");
             Console.WriteLine("C: Delete User");
             Console.WriteLine("D: Go back to the Dashboard");
-            while(correctOptionPicked == false)
+            _logger.LogDebug("Options rendered");
+            while (correctOptionPicked == false)
             {
                 var pickedOption = Console.ReadKey();
                 if (pickedOption.Key == ConsoleKey.A)
@@ -141,10 +143,12 @@ namespace macrix_client.Controllers
         }
         public void AddUser()
         {
+            
             Console.Clear();
             User newUser = GetUserInfo();
             _macrixApiService.CallRestMethod(RestMethod.POST, 0, newUser);
             Console.Clear();
+            _logger.LogDebug("User Added " + newUser);
             RenderDashboard();
 
         }
@@ -158,6 +162,7 @@ namespace macrix_client.Controllers
             Console.Clear();
             User newUser = GetUserInfo();
             _macrixApiService.CallRestMethod(RestMethod.POST, Convert.ToInt32(userId), newUser);
+            _logger.LogDebug("User Edited " + newUser);
             Console.Clear();
             RenderDashboard();
 
@@ -171,6 +176,7 @@ namespace macrix_client.Controllers
             var userId = GetValue(false, true, false, true);
             Console.Clear();
             _macrixApiService.CallRestMethod(RestMethod.DELETE, Convert.ToInt32(userId));
+            _logger.LogDebug("User Edited: Id " + userId);
             Console.Clear();
             Console.WriteLine("Loading...");
             Thread.Sleep(1000);
@@ -369,11 +375,5 @@ namespace macrix_client.Controllers
                 return text.PadRight(width - (width - text.Length) / 2).PadLeft(width);
             }
         }
-
-        public void PrintTable(List<User> users)
-        {
-
-        }
-
     }
 }
