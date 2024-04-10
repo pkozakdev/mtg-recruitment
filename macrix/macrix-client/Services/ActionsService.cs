@@ -53,6 +53,7 @@ namespace macrix_client.Controllers
                 Console.WriteLine("");
                 Console.WriteLine("Users in the system:");
                 Console.WriteLine("");
+                Console.WriteLine("");
                 PrintLine();
                 PrintRow("Id", "First Name", "Last Name", "Street Name", "House No", "Appt No", "Postal Code", "Town", "Phone No", "DOB", "Age");
                 PrintLine();
@@ -65,15 +66,20 @@ namespace macrix_client.Controllers
                 Console.WriteLine();
                 if (interactive)
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("Press e to edit, press any other key to refresh");
                 }
             }
             else
             {
                 Console.WriteLine("");
+                Console.WriteLine("");
                 Console.WriteLine("No users in the database");
                 if (interactive)
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("Press e to edit, press any other key to refresh");
                 }
             }
